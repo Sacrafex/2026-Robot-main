@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  font-family: Verdana, sans-serif;
+  overflow: hidden;
+}
+
+@keyframes changeColor{
+  
+  0%{
+    filter: hue-rotate(0deg) blur(6px)
+  }
+   100%{
+    filter: hue-rotate(360deg) blur(6px)
+  }
+  
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  animation: changeColor 10s linear infinite;
+  filter: blur(6px);
+}
+
+.overlay {
+  position: relative;
+  inset: 0;
+  z-index: 2;
+  color: white;
+  padding: 24px;
+  flex: 1;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+svg {
+  display: block;
+  font: 20em 'Montserrat';
+  width: 80%;
+  height: 300px;
+  margin-top:140px;
+}
+
+.text-copy {
+  fill: none;
+  stroke: white;
+  stroke-dasharray: 6% 29%;
+  stroke-width: 5px;
+  animation: stroke-offset 5.5s infinite linear;
+}
+
+.text-copy:nth-child(1) {
+  stroke: #FFD700;
+  animation-delay: -1s;
+}
+
+.text-copy:nth-child(2) {
+  stroke: #847900;
+  animation-delay: -2s;
+}
+
+.text-copy:nth-child(3) {
+  stroke: #DAA520;
+  animation-delay: -3s;
+}
+
+.text-copy:nth-child(4) {
+  stroke: #FF8C00;
+  animation-delay: -4s;
+}
+
+@keyframes stroke-offset {
+  100% {
+    stroke-dashoffset: -35%;
+  }
+}
+.bar {
+  width: 80%;
+  height: 12px;
+  min-height: 10px;
+  background: #2222226e;
+  border: 1px solid #555;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 6px 0 14px;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD700, #FF8C00);
+  transition: width 0.1s linear;
+}
+.ac {
+    width: 100%;
+    height: 30px;
+    min-height: 10px;
+    background: #2222226e;
+    border: 1px solid #555;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 6px 0 14px;
+    color: white;
+}
+input[type="number"] {
+    width: 100%;
+    height: 30px;
+    min-height: 10px;
+    background: #2222226e;
+    border: 1px solid #555;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 6px 0 14px;
+    color: white;
+}
+
+input[type="range"] {
+  accent-color: #2222226e;
+  width: 100%;
+  height: 30px;
+  min-height: 10px;
+  background: #2222226e;
+  border: 1px solid #555;
+  border-radius: 4px;
+  overflow: hidden;
+  color: white;
+}
+
+button {
+    width: 100%;
+    height: 30px;
+    min-height: 10px;
+    background: #2222226e;
+    border: 1px solid #555;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 6px 0 14px;
+    color: white;
+}
+.tptext {
+  font-weight: 200;
+  color:rgba(255, 255, 255, 0.54);
+  -webkit-text-stroke: 0.2px #000000;
+  filter: drop-shadow(2px 4px 4px #3e3e3e);
+  text-align: center;
+}
+.large {
+  font-weight: 400;
+  font-size: 20px;
+  color:rgba(255, 255, 255, 0.733);
+}
+canvas {
+  aspect-ratio: 1/1;
+  width:90%;
+  margin-top:20%;
+}
+input::placeholder {
+  text-align: center;
+}
+select option {
+  background-color: #000;
+}
+</style>
+</head>
+
+<body>
+  <div style="display:flex;" class="wrapper">
+  <center>
+  <div class="background">
+    <svg viewBox="0 0 960 300">
+      <symbol id="s-text">
+        <text text-anchor="middle" x="50%" y="90%">2839</text>
+      </symbol>
+      
+      <g>
+        <use href="#s-text" class="text-copy"></use>
+        <use href="#s-text" class="text-copy"></use>
+        <use href="#s-text" class="text-copy"></use>
+        <use href="#s-text" class="text-copy"></use>
+      </g>
+    </svg>
+    <h1 style="font-weight:900;background:linear-gradient(rgb(235, 192, 18), rgb(0, 0, 0));-webkit-text-stroke: 2px #000000;font-size:100px; -webkit-background-clip: text;background-clip: text;-webkit-text-fill-color: transparent;">Daedalus</h1>
+  </div>
+  </center>
+  <div style="display:flex;width:30%;flex:1;align-items: center;" class="overlay">
+    <p id="status">Loading...</p>
+    <p class="tptext">Auto Align Stats</p>
+    <div style="display:flex;">
+    <p class="tptext" style="margin-right:5px;"> &#916;:<span id="DistancefromHopper">0</span></p>
+    <p class="tptext" style="margin-right:5px;"> &#937;:<span id="Omega">0</span></p>
+    <p class="tptext" style="margin-right:5px;"> &#937;A:<span id="AppliedOmega">0</span></p>
+    </div>
+    <p class="tptext">Track Code Stats</p>
+    <div class="tptext" style="display:flex;">
+      <p class="tptext" style="margin-right:5px;">&#916;X:<span id="TCvx">0</span></p>
+      <p class="tptext" style="margin-right:5px;">&#916;Y:<span id="TCvy">0</span></p>
+      <p class="tptext" style="margin-right:5px;">&#937;:<span id="TComega">0</span></p>
+    </div>
+  </div>
+
+    <div style="display:flex;width:30%;flex:1;align-items: center;" class="overlay">
+    <p class="tptext" >IntakeArm(V): <span id="IntakeArmVoltage">0</span></p>
+    <div class="bar">
+    <div class="bar-fill" id="IntakeArmVoltageBar"></div>
+    </div>
+
+    <p class="tptext" >IntakeRoller(V): <span id="IntakeRollerVoltage">0</span></p>
+    <div class="bar">
+    <div class="bar-fill" id="IntakeRollerVoltageBar"></div>
+    </div>
+
+    <p class="tptext" >Elevator(V): <span id="ElevatorVoltage">0</span></p>
+    <div class="bar">
+    <div class="bar-fill" id="ElevatorVoltageBar"></div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;width:30%;flex:1;align-items: center;" class="overlay">
+  	<p class="tptext" >TargetSpeed: <span id="TargetSpeed">0</span></p>
+    
+  	<div class="bar">
+      <div class="bar-fill" id="TargetSpeedBar"></div>
+    </div>
+    <p style="margin:0;" class="tptext">+/- Error Correction</p>
+    <input style="width:80%;" type="range" id="ec" name="ec" min="0" max="100" />
+
+	  <p class="tptext" >BeltSpeed: <span id="BeltSpeed">0</span></p>
+
+    <div class="bar">
+    <div class="bar-fill" id="BeltSpeedBar"></div>
+    </div>
+
+    <div class="bar">
+    <div class="bar-fill" id="AppliedBeltSpeedBar"></div>
+    </div>
+
+    <p class="tptext" >KickSpeed: <span id="BeltSpeed">0</span></p>
+
+    <div class="bar">
+    <div class="bar-fill" id="KickSpeedBar"></div>
+    </div>
+
+    <div class="bar">
+    <div class="bar-fill" id="AppliedKickSpeedBar"></div>
+    </div>
+
+    <p class="tptext" >ShooterBSpeed: <span id="ShooterBSpeed">0</span></p>
+    
+    <div class="bar">
+    <div class="bar-fill" id="ShooterBSpeedBar"></div>
+    </div>
+
+    <div class="bar">
+    <div class="bar-fill" id="AppliedShooterBSpeedBar"></div>
+    </div>
+    
+    <p class="tptext" >ShooterCSpeed: <span id="ShooterCSpeed">0</span></p>
+
+    <div class="bar">
+    <div class="bar-fill" id="ShooterCSpeedBar"></div>
+    </div>
+
+    <div class="bar">
+    <div class="bar-fill" id="AppliedShooterCSpeedBar"></div>
+    </div>
+
+  </div>
+  <div style="display:flex;width:30%;flex:1;align-items: center;" class="overlay">
+    <p class="tptext" >Auto Chooser</p>
+	<select class="ac" id="autoChooser">
+    <option value="" disabled selected hidden>Please Select an Auto</option>
+  </select>
+  
+  <center><div id="robotBase" style="height:40px; width:40px; border: 2px solid #fff; background-color:transparent;margin-top:20px; margin-bottom: 10px;">^</div></center>
+
+  <h4 class="tptext large">Preformance Tuning</h4>
+  <div style="display:grid;">
+    <div style="display:flex;">
+      <input style="width:50%;margin-right:3%;" id="MESS_SPEED" type="number" placeholder="Speed (Rotations)">
+      <br>
+      <input style="width:50%;" id="MESS_TIME" type="number" placeholder="Time (Seconds)">
+      <br>
+    </div>
+
+    <button onclick="runObjectForTime('shooterSpeedRotations', document.getElementById('MESS_SPEED').value, document.getElementById('MESS_TIME').value)">Run Motors</button>
+    
+    <select class="ac" id="targetChooser">
+      <option style="background-color: #000;" value="ShooterBPID">Shooter B</option>
+      <option style="background-color: #000;" value="ShooterCPID">Shooter C</option>
+      <option style="background-color: #000;" value="TrackCodePID">TrackCode</option>
+      <option style="background-color: #000;" value="AimAndShoot">Auto GoAndShoot</option>
+    </select>
+    
+    <div style="display:flex;align-items: center;">
+      <input style="width:33.3%;margin-right:3%;" id="kP" type="number" placeholder="kP">
+      <input style="width:33.3%;margin-right:3%;" id="kI" type="number" placeholder="kI">
+      <input style="width:33.3%;" id="kD" type="number" placeholder="kD">
+    </div>
+
+    <button onclick="applyPIDs();">Set PIDs</button>
+  </div>
+</div>
+</div>
+
+<script>
+const limits = {
+  TargetSpeed: 6000,
+  BeltSpeed: 6000,
+  ShooterBSpeed: 6000,
+  ShooterCSpeed: 6000,
+  AppliedBeltSpeed: 1,
+  AppliedShooterBSpeed: 1,
+  AppliedShooterCSpeed: 1
+};
+
+async function updateDashboard() {
+try {
+    const res = await fetch('/data');
+    const dataDB = await res.json();
+
+    for (const key in dataDB) {
+      console.log("Key: "+key)
+      const valueEl = document.getElementById(key);
+      if (valueEl) valueEl.innerText = dataDB[key];
+      console.log(dataDB[key]);
+
+      const bar = document.getElementById(key + "Bar");
+      if (bar && limits[key] !== undefined) {
+        const percent = Math.min(
+          Math.abs(dataDB[key]) / limits[key] * 100,
+          100
+        );
+        bar.style.width = percent + "%";
+      }
+    }
+  document.getElementById("status").innerHTML = '<p style="color:lightgreen;">Connected</p> ' + new Date().toLocaleTimeString();
+  } catch (err) {
+  console.log("Caught Error: "+err);
+  document.getElementById("status").innerHTML = '<p style="color:red;">Disconnected</p> ';
+  }
+}
+
+async function updateAutoChooser() {
+    try {
+        const resautos = await fetch('/autos');
+        const data = await resautos.json();
+        const select = document.getElementById('autoChooser');
+        select.innerHTML = '';
+        for (const [name, val] of Object.entries(data.options)) {
+            const opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = name;
+            opt.style.backgroundColor = "#000";
+            if (val === data.selected) opt.selected = true;
+            select.appendChild(opt);
+        }
+    } catch (err) {
+        console.error('Failed to load autos', err);
+    }
+}
+
+document.getElementById('autoChooser').addEventListener('change', e => {
+    fetch('/setAuto?auto=' + e.target.value);
+});
+
+async function runObjectForTime(target, value, time) {
+  try {
+  await fetch(`/set?target=${encodeURIComponent(target)}&value=${encodeURIComponent(value)}&time=${encodeURIComponent(time)}`);
+  } catch (err) {
+  console.log(err);
+  }
+}
+
+var degree;
+
+async function setRobotRotation() {
+  request = await fetch("/rotations");
+  if (!request.ok) {return}
+  datarot = await request.json();
+  document.getElementById("robotBase").style.transform = `rotate(${datarot.degree}deg)`;
+}
+
+async function applyPIDs() {
+  const targetChooser = document.getElementById("targetChooser");
+  const elP = document.getElementById("kP");
+  const elI = document.getElementById("kI");
+  const elD = document.getElementById("kD");
+  var target;
+
+  try {
+    const params = new URLSearchParams({
+      kPvar: elP.value,
+      kIvar: elI.value,
+      kDvar: elD.value,
+      target: targetChooser.value
+    });
+    await fetch(`/setPID?${params.toString()}`);
+  } catch (err) {
+    console.log("Failed to set PIDs:", err);
+  }
+}
+
+async function loadPIDs() {
+    const targetChooser = document.getElementById("targetChooser");
+    const elP = document.getElementById("kP");
+    const elI = document.getElementById("kI");
+    const elD = document.getElementById("kD");
+    var target;
+    
+    try {
+    const response2 = await fetch("/requestpid?target="+targetChooser.value);
+    if (!response2.ok) return;
+    
+    const data2 = await response2.json();
+    console.log(data2);
+    elP.value = data2.kP;
+    elI.value = data2.kI;
+    elD.value = data2.kD;
+  } catch (err) {
+    console.error("Failed to fetch default PIDs:", err);
+    return;
+  }
+}
+
+function updateAll() {
+  updateDashboard();
+  setRobotRotation();
+  updateAutoChooser();
+}
+
+document.getElementById('targetChooser').addEventListener('change', e => {
+    loadPIDs();
+});
+
+document.getElementById('ec').addEventListener('change', e => {
+    fetch('/setErrorCorrection?value=' + e.target.value);
+});
+
+window.addEventListener('load', (event) => {
+    loadPIDs();
+});
+
+setInterval(updateAll, 100);
+
+</script>
+</body>
+</html>
